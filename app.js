@@ -123,7 +123,7 @@ Theoh`
       id: 1,
       term: 'Onalethata',
       pos: 'n., proper',
-      def: 'Lit. "the one who is truth." In practice: the person who will steal your blanket at 3am, offer no apology, and somehow still be right about everything.'
+  def: 'A Setswana name historically glossed as “strength”.Contemporary field observations, however, have located the primary source of that strength in the anatomy between his legs. The finding is considered definitive and, by all accounts, not metaphorical.'
     },
     {
       id: 2,
