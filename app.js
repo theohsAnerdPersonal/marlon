@@ -84,7 +84,7 @@ let me plunge into that holy dark
       body: `the poems on your office table.
 
 I keep meaning to.
-I keep finding other things to do with my eyes
+I keep finding other things to do with my e
 when I am near you.`,
       date: '',
       note: ''
@@ -171,7 +171,7 @@ Theoh`
 reading: [
     { id: 1, type: 'Book', title: "Giovanni's Room", author: 'James Baldwin', note: 'Because you would have loved this in your English seminar. Because Baldwin writes love like it costs something.' },
     { id: 2, type: 'Film', title: 'Call Me By Your Name', author: 'Luca Guadagnino', note: 'For the aesthetics. For the ache. For what it feels like to have a summer change you.' },
-    { id: 3, type: 'Music', title: 'thinkin about you', author: 'Frank Ocean', note: 'Listen to it at night, alone, with your eyes closed. You will understand.' },
+    { id: 3, type: 'Music', title: 'thinkin about you', author: 'Frank Ocean', note: 'Listen to it at night, alone, with your e closed. You will understand.' },
     { id: 4, type: 'Book', title: "Don't Call Us Dead", author: 'Danez Smith', note: 'You already live here, in these poems. You just don\'t know it yet.' },
     { id: 5, type: 'Music', title: 'True Romance', author: 'Tove Lo', note: 'For when love feels cinematic and a little reckless.' },
     { id: 6, type: 'Music', title: "I Don't Know You Yet", author: 'Absolutely', note: '"I just don\'t know you yet / But I know you\'ve been sent from God / To teach me to love again." A song for the space between hoping and knowing.' },
@@ -458,73 +458,138 @@ function formatMonths(m) {
 }
 
 // ─── EASTER EGG ────────────────────────────────────────────────────────────
-let noAttempts = 0;
+// ─── EASTER EGG (FINAL MESSAGES + MOBILE FIX) ──────────────────────────
+let noClickAttempts = 0;
+const MAX_ATTEMPTS = 5;
 
 function showEasterEgg() {
   const el = document.getElementById('easter-egg-overlay');
-  el.classList.remove('hidden'); el.classList.add('flex');
-  noAttempts = 0;
-  const btn = document.getElementById('no-btn');
-  btn.style.cssText = 'position:absolute;right:0;top:50%;transform:translateY(-50%)';
-  btn.textContent = 'No';
-  btn.onmouseenter = runAway;
-  btn.ontouchstart = runAway;
-  btn.onclick = null;
+  el.classList.remove('hidden');
+  el.classList.add('flex');
+
+  const noBtn = document.getElementById('no-btn');
+  // Reset position and style
+  noBtn.style.cssText = 'position:absolute; right:0; top:50%; left:auto; transform:translateY(-50%); transition: none;';
+  noBtn.textContent = 'No';
+  noBtn.onclick = null;
+  noClickAttempts = 0;
+
+  // Clean listeners and attach mobile‑safe ones
+  noBtn.removeEventListener('mouseenter', runAway);
+  noBtn.removeEventListener('touchstart', runAwayTouch);
+  noBtn.addEventListener('mouseenter', runAway);
+  noBtn.addEventListener('touchstart', runAwayTouch, { passive: false });
 }
 
 function closeEasterEgg() {
-  document.getElementById('easter-egg-overlay').classList.add('hidden');
-  document.getElementById('easter-egg-overlay').classList.remove('flex');
+  const el = document.getElementById('easter-egg-overlay');
+  el.classList.add('hidden');
+  el.classList.remove('flex');
+}
+
+function runAwayTouch(e) {
+  e.preventDefault();      // prevents ghost click on mobile
+  runAway(e);
 }
 
 function runAway(event) {
   const btn = event.currentTarget;
   const arena = document.getElementById('btn-arena');
-  const aw = arena.offsetWidth, ah = arena.offsetHeight;
-  const bw = btn.offsetWidth, bh = btn.offsetHeight;
-  let x, y, tries = 0;
-  do { x = Math.random()*(aw-bw); y = Math.random()*(ah-bh); tries++; }
-  while(tries<20 && Math.hypot(x-(aw/2-bw/2),y-(ah/2-bh/2))<80);
-  btn.style.cssText = `position:absolute;left:${x}px;top:${y}px;transition:all 0.2s cubic-bezier(.34,1.56,.64,1)`;
-  if (navigator.vibrate) navigator.vibrate([15,15,15]);
-  noAttempts++;
-  if (noAttempts >= 5) {
+  const ar = arena.getBoundingClientRect();
+  const bw = btn.offsetWidth;
+  const bh = btn.offsetHeight;
+  const maxX = ar.width - bw - 8;
+  const maxY = ar.height - bh;
+
+  let x, y, attempts = 0;
+  do {
+    x = Math.random() * maxX;
+    y = Math.random() * maxY;
+    attempts++;
+  } while (attempts < 15 && Math.hypot(x - (ar.width/2 - bw/2), y - (ar.height/2 - bh/2)) < 60);
+
+  btn.style.transition = 'all 0.25s ease';
+  btn.style.left = x + 'px';
+  btn.style.top = y + 'px';
+  btn.style.right = 'auto';
+  btn.style.transform = 'none';
+
+  if (navigator.vibrate) navigator.vibrate([20, 20, 20]);
+
+  noClickAttempts++;
+  if (noClickAttempts >= MAX_ATTEMPTS) {
     setTimeout(() => {
-      btn.textContent = 'Fine. Yes. Obviously.';
-      btn.onmouseenter = null; btn.ontouchstart = null;
-      btn.onclick = sayYes;
+      btn.textContent = 'Fine… Yes 😏';
+      btn.removeEventListener('mouseenter', runAway);
+      btn.removeEventListener('touchstart', runAwayTouch);
+      btn.onclick = noSurrender;    // "No can't say that" joke
     }, 300);
   }
 }
 
+// ── YES (big button) ──
 function sayYes() {
   closeEasterEgg();
   const yes = document.getElementById('yes-overlay');
-  yes.classList.remove('hidden'); yes.classList.add('flex');
-  launchConfetti(document.getElementById('yes-confetti'), 150);
-  if (navigator.vibrate) navigator.vibrate([80,40,80,40,160,40,220]);
+  yes.querySelector('p').textContent = 'Obviously.';
+  yes.querySelector('h2').textContent = "You've been my boyfriend before you even knew. You always have been.";
+  yes.querySelector('p:last-of-type').textContent = '— there was never a question.';
+
+  yes.classList.remove('hidden');
+  yes.classList.add('flex');
+  launchConfetti(document.getElementById('yes-confetti'), 140);
+  if (navigator.vibrate) navigator.vibrate([80, 40, 80, 40, 160, 40, 200]);
+}
+
+// ── NO after giving up ──
+function noSurrender() {
+  closeEasterEgg();
+  const yes = document.getElementById('yes-overlay');
+  yes.querySelector('p').textContent = "No, you can't say that.";
+  yes.querySelector('h2').textContent = "You're already my boyfriend.";
+  yes.querySelector('p:last-of-type').textContent = '— nice try.';
+
+  yes.classList.remove('hidden');
+  yes.classList.add('flex');
+  launchConfetti(document.getElementById('yes-confetti'), 140);
+  if (navigator.vibrate) navigator.vibrate([80, 40, 80, 40, 160, 40, 200]);
+}
+
+// ── NOT YET button ──
+function notYet() {
+  closeEasterEgg();
+  const yes = document.getElementById('yes-overlay');
+  yes.querySelector('p').textContent = 'Be serious.';
+  yes.querySelector('h2').textContent = 'You are my boyfriend.';
+  yes.querySelector('p:last-of-type').textContent = "— don't play.";
+
+  yes.classList.remove('hidden');
+  yes.classList.add('flex');
+  launchConfetti(document.getElementById('yes-confetti'), 140);
+  if (navigator.vibrate) navigator.vibrate([80, 40, 80, 40, 160, 40, 200]);
 }
 
 function closeYes() {
-  document.getElementById('yes-overlay').classList.add('hidden');
-  document.getElementById('yes-overlay').classList.remove('flex');
+  const yes = document.getElementById('yes-overlay');
+  yes.classList.add('hidden');
+  yes.classList.remove('flex');
 }
 
 function launchConfetti(container, count) {
-  const colors = ['#c8b89a','#e8e2d6','#a09070','#d4c4a0','#ffffff','#8a7f6e','#b8d4c8'];
-  for (let i=0;i<count;i++) {
+  const colors = ['#c8b89a','#e8e2d6','#a09070','#d4c4a0','#ffffff','#8a7f6e'];
+  for (let i = 0; i < count; i++) {
     const p = document.createElement('div');
     p.className = 'confetti-piece';
-    Object.assign(p.style, {
-      left: Math.random()*100+'%', top: '-12px',
-      width: (Math.random()*9+4)+'px', height: (Math.random()*9+4)+'px',
-      background: colors[Math.floor(Math.random()*colors.length)],
-      borderRadius: Math.random()>.5?'50%':'2px',
-      animationDuration: (Math.random()*3+2)+'s',
-      animationDelay: (Math.random()*2)+'s'
-    });
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = '-10px';
+    p.style.width = (Math.random() * 8 + 4) + 'px';
+    p.style.height = (Math.random() * 8 + 4) + 'px';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    p.style.animationDuration = (Math.random() * 2.5 + 2) + 's';
+    p.style.animationDelay = (Math.random() * 1.5) + 's';
     container.appendChild(p);
-    setTimeout(()=>p.remove(), 6000);
+    setTimeout(() => p.remove(), 5500);
   }
 }
 // ─── SCROLL‑DIRECTION FADE (HEADER & PLAYER) ─────────────────────────────
