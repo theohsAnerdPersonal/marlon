@@ -1,0 +1,83 @@
+{
+  "timeline": [
+    {
+      "id": 1,
+      "date": "The beginning",
+      "title": "Day One",
+      "note": "Before either of us knew what this would become."
+    }
+  ],
+  "poetry": [
+    {
+      "id": 1,
+      "title": "Notes on Staying",
+      "body": "I keep finding you\nin the pauses between things —\nthe quiet after laughter,\nthe moment before sleep.\n\nYou are the most comfortable\nsilence I have ever been in.",
+      "date": "2024"
+    }
+  ],
+  "letters": [
+    {
+      "id": 1,
+      "date": "Some Tuesday",
+      "body": "Dear Poppi,\n\nI am writing this because I could not say it aloud without laughing nervously. You are a strange and wonderful person. I am very glad you exist.\n\nWith love and mild terror,\nTheo"
+    }
+  ],
+  "glossary": [
+    {
+      "id": 1,
+      "term": "Onalethata",
+      "pos": "n., proper",
+      "def": "The one who is truth. Also: the person who will steal your blanket at 3am and have no remorse about it."
+    },
+    {
+      "id": 2,
+      "term": "Poppi",
+      "pos": "n., term of address",
+      "def": "The warmest word in the room. Reserved for him exclusively."
+    },
+    {
+      "id": 3,
+      "term": "The Look",
+      "pos": "n.",
+      "def": "The expression Marlon makes when he already knows you're wrong but is waiting for you to figure it out yourself."
+    }
+  ],
+  "field_notes": [
+    {
+      "id": 1,
+      "text": "Subject displays remarkable capacity for patience. Further study required to determine if this is genuine or strategic."
+    },
+    {
+      "id": 2,
+      "text": "Subject has been observed laughing at his own jokes before delivering the punchline. Endearing. Statistically unusual."
+    },
+    {
+      "id": 3,
+      "text": "Subject's presence makes ordinary rooms feel significantly more livable."
+    }
+  ],
+  "reading": [
+    {
+      "id": 1,
+      "type": "Book",
+      "title": "Giovanni's Room",
+      "author": "James Baldwin",
+      "note": "Because you would have loved this in your English seminar."
+    },
+    {
+      "id": 2,
+      "type": "Film",
+      "title": "Call Me By Your Name",
+      "author": "Luca Guadagnino",
+      "note": "For the aesthetics. For the ache."
+    },
+    {
+      "id": 3,
+      "type": "Music",
+      "title": "Blonde",
+      "author": "Frank Ocean",
+      "note": "Listen to it at night."
+    }
+  ],
+  "photos": []
+}

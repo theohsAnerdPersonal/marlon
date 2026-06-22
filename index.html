@@ -1,0 +1,282 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Marlon Maologa</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Remove the Supabase SDK line -->
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#0e0e0e] text-[#e8e2d6]">
+
+<!-- PASSWORD GATE -->
+<div id="password-gate" class="fixed inset-0 z-[200] bg-[#0a0a0a] flex flex-col items-center justify-center px-8">
+  <div class="hero-grain absolute inset-0 pointer-events-none opacity-20"></div>
+  <div class="relative z-10 text-center max-w-xs w-full">
+    <p class="text-xs font-inter tracking-[0.5em] uppercase text-[#5a5245] mb-8">Restricted Access</p>
+    <h1 class="font-garamond text-5xl text-[#e8e2d6] mb-2">The <em class="text-[#c8b89a]">Archive</em></h1>
+    <p class="font-cormorant italic text-[#5a5245] text-lg mb-12">For one reader only.</p>
+    <div class="relative mb-3">
+      <input
+        id="pw-input"
+        type="password"
+        placeholder="enter passphrase"
+        class="input-field w-full text-center tracking-widest text-lg"
+        onkeydown="if(event.key==='Enter') checkPassword()"
+        autocomplete="off"
+      >
+    </div>
+    <p id="pw-error" class="font-cormorant italic text-[#8a4040] text-sm mb-4 opacity-0 transition-opacity">Incorrect. Try again.</p>
+    <button onclick="checkPassword()" class="btn-ghost w-full tracking-widest text-sm">Enter →</button>
+    <p class="mt-12 font-cormorant italic text-[#3a3530] text-sm">
+      "Not all archives are open to the public."
+    </p>
+  </div>
+</div>
+
+<!-- MUSIC -->
+<audio id="audio-player" loop src="Night Changes (Piano Lofi).mp3"></audio>
+
+<!-- MUSIC PLAYER BAR -->
+<div id="music-player" class="fixed bottom-0 left-0 right-0 z-50 player-bar px-4 py-3 flex items-center gap-4">
+  <button id="play-btn" onclick="togglePlay()" class="text-[#c8b89a] hover:text-white transition-colors flex-shrink-0">
+    <svg id="play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    <svg id="pause-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="hidden"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+  </button>
+  <div class="flex-1 min-w-0">
+    <p class="text-xs text-[#5a5245] font-inter tracking-widest uppercase">Now Playing</p>
+    <p class="text-sm text-[#c8b89a] font-garamond truncate italic">lo-fi study session</p>
+  </div>
+  <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.4" class="w-16 accent-[#c8b89a] flex-shrink-0" oninput="setVolume(this.value)">
+</div>
+
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-40 nav-glass px-6 py-4 flex items-center justify-between">
+  <span class="font-garamond italic text-[#c8b89a] text-lg tracking-wide">M.M.</span>
+  <div class="hidden md:flex items-center gap-6 text-xs font-inter tracking-widest uppercase text-[#8a7f6e]">
+    <a href="#timeline" class="nav-link">Lore</a>
+    <a href="#poetry" class="nav-link">Poetry</a>
+    <a href="#letters" class="nav-link">Letters</a>
+    <a href="#glossary" class="nav-link">Glossary</a>
+    <a href="#field-notes" class="nav-link">Field Notes</a>
+    <a href="#reading" class="nav-link">Reading</a>
+    <a href="#album" class="nav-link">Album</a>
+  </div>
+  <button onclick="toggleMobileNav()" class="md:hidden text-[#8a7f6e] p-1">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div id="mobile-nav" class="fixed inset-0 z-50 bg-[#0a0a0a] hidden flex-col items-center justify-center gap-10">
+  <button onclick="toggleMobileNav()" class="absolute top-6 right-6 text-[#8a7f6e] text-xl">✕</button>
+  <a href="#timeline" onclick="toggleMobileNav()" class="font-garamond italic text-3xl text-[#c8b89a]">Lore</a>
+  <a href="#poetry" onclick="toggleMobileNav()" class="font-garamond italic text-3xl text-[#c8b89a]">Poetry</a>
+  <a href="#letters" onclick="toggleMobileNav()" class="font-garamond italic text-3xl text-[#c8b89a]">Letters</a>
+  <a href="#glossary" onclick="toggleMobileNav()" class="font-garamond italic text-3xl text-[#c8b89a]">Glossary</a>
+  <a href="#field-notes" onclick="toggleMobileNav()" class="font-garamond italic text-3xl text-[#c8b89a]">Field Notes</a>
+  <a href="#reading" onclick="toggleMobileNav()" class="font-garamond italic text-3xl text-[#c8b89a]">Reading</a>
+  <a href="#album" onclick="toggleMobileNav()" class="font-garamond italic text-3xl text-[#c8b89a]">Album</a>
+</div>
+
+<!-- HERO -->
+<section class="min-h-screen flex flex-col items-center justify-center px-6 text-center relative overflow-hidden pt-20 pb-36">
+  <div class="hero-grain absolute inset-0 pointer-events-none opacity-25"></div>
+  <p class="text-xs font-inter tracking-[0.5em] uppercase text-[#5a5245] mb-8">A Study of —</p>
+  <h1 class="font-garamond text-[clamp(3.5rem,13vw,9rem)] leading-none tracking-tight text-[#e8e2d6] mb-4">
+    Marlon<br><em class="text-[#c8b89a]">Maologa</em>
+  </h1>
+  <p class="font-cormorant italic text-[#8a7f6e] text-xl md:text-2xl mt-8 max-w-md leading-relaxed">
+    "Also known as Onalethata. Also known as Poppi.<br>Also known as mine."
+  </p>
+
+  <!-- OBVIOUS EASTER EGG -->
+  <div class="mt-16 mb-4">
+    <button onclick="showEasterEgg()" class="easter-egg-btn font-cormorant italic text-[#c8b89a] text-lg border border-[#c8b89a]/30 hover:border-[#c8b89a] px-8 py-3 rounded-sm transition-all duration-300 hover:bg-[#c8b89a]/5 tracking-wide">
+      ✦ &nbsp; A question, for you &nbsp; ✦
+    </button>
+  </div>
+
+  <div class="mt-10 flex flex-col items-center gap-2">
+    <p class="text-xs font-inter tracking-widest uppercase text-[#3a3530]">scroll to begin</p>
+    <div class="w-px h-14 bg-gradient-to-b from-[#5a5245] to-transparent"></div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline" class="px-6 py-24 max-w-2xl mx-auto">
+  <div class="section-header mb-16">
+    <p class="text-xs font-inter tracking-[0.4em] uppercase text-[#5a5245] mb-3">§ I</p>
+    <h2 class="font-garamond text-4xl md:text-5xl text-[#e8e2d6]">The <em>Lore</em></h2>
+    <p class="font-cormorant italic text-[#8a7f6e] text-lg mt-2">A chronological record of significant events</p>
+  </div>
+  <div id="timeline-list" class="space-y-0"></div>
+  <div class="mt-12 editor-panel p-5 rounded">
+    <p class="text-xs font-inter tracking-widest uppercase text-[#5a5245] mb-4">Add an entry</p>
+    <input id="tl-date" placeholder="Date (e.g. 14 Feb 2024)" class="input-field w-full mb-2">
+    <input id="tl-title" placeholder="Title" class="input-field w-full mb-2">
+    <textarea id="tl-note" placeholder="Note (optional)" rows="2" class="input-field w-full mb-4 resize-none"></textarea>
+    <button onclick="addTimelineEntry()" class="btn-ghost text-sm">+ Add to record</button>
+  </div>
+</section>
+
+<!-- POETRY -->
+<section id="poetry" class="px-6 py-24 bg-[#080808]">
+  <div class="max-w-2xl mx-auto">
+    <div class="section-header mb-16">
+      <p class="text-xs font-inter tracking-[0.4em] uppercase text-[#5a5245] mb-3">§ II</p>
+      <h2 class="font-garamond text-4xl md:text-5xl text-[#e8e2d6]">Verse & <em>Fragment</em></h2>
+      <p class="font-cormorant italic text-[#8a7f6e] text-lg mt-2">Selected poems, written in the margins</p>
+    </div>
+    <div id="poetry-list" class="space-y-16"></div>
+    <div class="mt-16 editor-panel p-5 rounded">
+      <p class="text-xs font-inter tracking-widest uppercase text-[#5a5245] mb-4">Add a poem</p>
+      <input id="poem-title" placeholder="Title" class="input-field w-full mb-2">
+      <textarea id="poem-body" placeholder="Write your poem here..." rows="8" class="input-field w-full mb-2 resize-none font-cormorant text-lg italic"></textarea>
+      <input id="poem-date" placeholder="Date written" class="input-field w-full mb-4">
+      <button onclick="addPoem()" class="btn-ghost text-sm">+ Add poem</button>
+    </div>
+  </div>
+</section>
+
+<!-- LETTERS -->
+<section id="letters" class="px-6 py-24 max-w-2xl mx-auto">
+  <div class="section-header mb-16">
+    <p class="text-xs font-inter tracking-[0.4em] uppercase text-[#5a5245] mb-3">§ III</p>
+    <h2 class="font-garamond text-4xl md:text-5xl text-[#e8e2d6]">Letters</h2>
+    <p class="font-cormorant italic text-[#8a7f6e] text-lg mt-2">Private correspondence, kept for the record</p>
+  </div>
+  <div id="letters-list" class="space-y-12"></div>
+  <div class="mt-12 editor-panel p-5 rounded">
+    <p class="text-xs font-inter tracking-widest uppercase text-[#5a5245] mb-4">Write a letter</p>
+    <input id="letter-date" placeholder="Date" class="input-field w-full mb-2">
+    <textarea id="letter-body" placeholder="Dear Poppi,..." rows="10" class="input-field w-full mb-4 resize-none font-cormorant text-lg leading-relaxed"></textarea>
+    <button onclick="addLetter()" class="btn-ghost text-sm">+ Seal & send</button>
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<section id="glossary" class="px-6 py-24 bg-[#080808]">
+  <div class="max-w-2xl mx-auto">
+    <div class="section-header mb-16">
+      <p class="text-xs font-inter tracking-[0.4em] uppercase text-[#5a5245] mb-3">§ IV</p>
+      <h2 class="font-garamond text-4xl md:text-5xl text-[#e8e2d6]">Glossary <em>of Us</em></h2>
+      <p class="font-cormorant italic text-[#8a7f6e] text-lg mt-2">A lexicon. Definitions subject to revision.</p>
+    </div>
+    <div id="glossary-list" class="space-y-8"></div>
+    <div class="mt-12 editor-panel p-5 rounded">
+      <p class="text-xs font-inter tracking-widest uppercase text-[#5a5245] mb-4">Add a definition</p>
+      <input id="gloss-term" placeholder="Term" class="input-field w-full mb-2">
+      <input id="gloss-pos" placeholder="Part of speech (n., v., adj.)" class="input-field w-full mb-2">
+      <textarea id="gloss-def" placeholder="Definition..." rows="3" class="input-field w-full mb-4 resize-none"></textarea>
+      <button onclick="addGlossary()" class="btn-ghost text-sm">+ Add entry</button>
+    </div>
+  </div>
+</section>
+
+<!-- FIELD NOTES -->
+<section id="field-notes" class="px-6 py-24 max-w-2xl mx-auto">
+  <div class="section-header mb-16">
+    <p class="text-xs font-inter tracking-[0.4em] uppercase text-[#5a5245] mb-3">§ V</p>
+    <h2 class="font-garamond text-4xl md:text-5xl text-[#e8e2d6]">Field <em>Notes</em></h2>
+    <p class="font-cormorant italic text-[#8a7f6e] text-lg mt-2">Observations on the subject. Ongoing study.</p>
+  </div>
+  <div id="field-notes-list" class="space-y-4"></div>
+  <div class="mt-12 editor-panel p-5 rounded">
+    <p class="text-xs font-inter tracking-widest uppercase text-[#5a5245] mb-4">Record an observation</p>
+    <textarea id="fn-text" placeholder="Subject demonstrates an unusual..." rows="3" class="input-field w-full mb-4 resize-none font-cormorant italic text-lg"></textarea>
+    <button onclick="addFieldNote()" class="btn-ghost text-sm">+ Log observation</button>
+  </div>
+</section>
+
+<!-- READING -->
+<section id="reading" class="px-6 py-24 bg-[#080808]">
+  <div class="max-w-2xl mx-auto">
+    <div class="section-header mb-16">
+      <p class="text-xs font-inter tracking-[0.4em] uppercase text-[#5a5245] mb-3">§ VI</p>
+      <h2 class="font-garamond text-4xl md:text-5xl text-[#e8e2d6]">Recommended <em>Reading</em></h2>
+      <p class="font-cormorant italic text-[#8a7f6e] text-lg mt-2">A curated bibliography. Yours to keep.</p>
+    </div>
+    <div id="reading-list" class="space-y-1"></div>
+    <div class="mt-12 editor-panel p-5 rounded">
+      <p class="text-xs font-inter tracking-widest uppercase text-[#5a5245] mb-4">Add a recommendation</p>
+      <div class="flex gap-2 mb-2">
+        <select id="rec-type" class="input-field w-28 flex-shrink-0">
+          <option>Book</option><option>Film</option><option>Music</option><option>Article</option><option>Other</option>
+        </select>
+        <input id="rec-title" placeholder="Title" class="input-field flex-1">
+      </div>
+      <input id="rec-author" placeholder="Author / Director / Artist" class="input-field w-full mb-2">
+      <input id="rec-note" placeholder="Why this one? (optional)" class="input-field w-full mb-4">
+      <button onclick="addRecommendation()" class="btn-ghost text-sm">+ Add to bibliography</button>
+    </div>
+  </div>
+</section>
+
+<!-- ALBUM -->
+<section id="album" class="px-6 py-24 max-w-4xl mx-auto">
+  <div class="section-header mb-16 max-w-2xl">
+    <p class="text-xs font-inter tracking-[0.4em] uppercase text-[#5a5245] mb-3">§ VII</p>
+    <h2 class="font-garamond text-4xl md:text-5xl text-[#e8e2d6]">The <em>Archive</em></h2>
+    <p class="font-cormorant italic text-[#8a7f6e] text-lg mt-2">A photographic record, ordered by time.</p>
+  </div>
+  <div id="album-tabs" class="flex flex-wrap gap-2 mb-10"></div>
+  <div id="album-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+  <div class="mt-8 editor-panel p-5 rounded">
+    <p class="text-xs font-inter tracking-widest uppercase text-[#5a5245] mb-4">Add a photo</p>
+    <select id="photo-chapter" class="input-field w-full mb-3"></select>
+    <label class="block w-full text-center py-4 border border-dashed border-[#2a2520] hover:border-[#c8b89a] transition-colors cursor-pointer rounded text-[#5a5245] hover:text-[#c8b89a] text-sm font-inter">
+      <span id="upload-label">Click to select photo</span>
+      <input type="file" accept="image/*" class="hidden" onchange="addPhoto(event)">
+    </label>
+    <input id="photo-caption" placeholder="Caption (optional)" class="input-field w-full mt-3">
+    <p id="upload-status" class="text-xs text-[#5a5245] mt-2 hidden">Uploading...</p>
+  </div>
+  <button onclick="addChapter()" class="mt-4 btn-ghost text-sm">+ Add next chapter (6 months)</button>
+</section>
+
+<!-- EASTER EGG OVERLAY -->
+<div id="easter-egg-overlay" class="fixed inset-0 z-[100] hidden items-center justify-center" style="background:rgba(8,8,8,0.96);backdrop-filter:blur(8px)">
+  <div id="confetti-container" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+  <div class="relative z-10 text-center px-8 max-w-sm w-full">
+    <p class="font-cormorant italic text-[#5a5245] text-base mb-4 tracking-wide">A question has been pending for some time.</p>
+    <div class="divider-line mb-8"></div>
+    <h2 class="font-garamond text-[clamp(2.5rem,10vw,4rem)] text-[#e8e2d6] mb-3 leading-tight">
+      Will you be
+    </h2>
+    <h2 class="font-garamond text-[clamp(2.5rem,10vw,4rem)] italic text-[#c8b89a] mb-10 leading-tight">
+      my boyfriend?
+    </h2>
+    <div id="btn-arena" class="relative h-20 flex items-center justify-center">
+      <button onclick="sayYes()" class="font-garamond text-xl px-10 py-3 bg-[#c8b89a] text-[#0e0e0e] rounded-sm hover:bg-[#e8e2d6] transition-colors z-10">
+        Yes
+      </button>
+      <button
+        id="no-btn"
+        onmouseenter="runAway(event)"
+        ontouchstart="runAway(event)"
+        class="font-garamond text-xl px-8 py-3 border border-[#3a3530] text-[#5a5245] rounded-sm"
+        style="position:absolute;right:0;top:50%;transform:translateY(-50%)"
+      >No</button>
+    </div>
+    <button onclick="closeEasterEgg()" class="mt-12 text-xs font-inter tracking-widest uppercase text-[#2a2520] hover:text-[#5a5245] transition-colors">not yet</button>
+  </div>
+</div>
+
+<!-- YES OVERLAY -->
+<div id="yes-overlay" class="fixed inset-0 z-[110] hidden items-center justify-center bg-[#0a0a0a]">
+  <div id="yes-confetti" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+  <div class="relative z-10 text-center px-8">
+    <p class="font-cormorant italic text-[#5a5245] text-xl mb-4">Obviously.</p>
+    <h2 class="font-garamond text-[clamp(4rem,16vw,8rem)] text-[#c8b89a] leading-none">Obviously.</h2>
+    <p class="font-cormorant italic text-[#8a7f6e] text-lg mt-6">— Marlon, probably.</p>
+    <button onclick="closeYes()" class="mt-16 text-xs font-inter tracking-widest uppercase text-[#3a3530] hover:text-[#5a5245] transition-colors">back to the archive</button>
+  </div>
+</div>
+
+<div class="pb-28"></div>
+<script src="app.js"></script>
+</body>
+</html>
