@@ -202,7 +202,7 @@ STATE.album.chapters.forEach(c => { if (!STATE.album.photos[c]) STATE.album.phot
 // ─── PASSWORD (SPACES, NO DASHES) ─────────────────────────────────────
 function checkPassword() {
   const val = document.getElementById('pw-input').value.trim();
-  if (val === '30 06 2026') {                     // <-- exact match with spaces
+  if (val === '30062026') {                     // <-- exact match with spaces
     const gate = document.getElementById('password-gate');
     gate.style.opacity = '0';
     gate.style.transition = 'opacity 1s ease';
