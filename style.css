@@ -1,168 +1,491 @@
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Inter',sans-serif;scroll-behavior:smooth;overscroll-behavior:none}
-.font-garamond{font-family:'EB Garamond',serif}
-.font-cormorant{font-family:'Cormorant Garamond',serif}
-
-.nav-glass{
-  background:rgba(10,10,10,0.88);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  border-bottom:0.5px solid rgba(255,255,255,0.05);
-}
-.nav-link{color:#8a7f6e;transition:color 0.2s;text-decoration:none}
-.nav-link:hover{color:#c8b89a}
-
-.player-bar{
-  background:rgba(8,8,8,0.97);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-top:0.5px solid rgba(255,255,255,0.06);
+ * {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.hero-grain{
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size:128px;
+
+/* ── EXTRA READABILITY OVERRIDES ───────────────── */
+
+/* 1. Make main body text almost white for maximum contrast */
+body {
+  color: #faf7f0;
 }
 
-.input-field{
-  background:rgba(255,255,255,0.03);
-  border:0.5px solid rgba(255,255,255,0.08);
-  color:#e8e2d6;
-  padding:10px 14px;
-  border-radius:4px;
-  font-family:'Inter',sans-serif;
-  font-size:14px;
-  outline:none;
-  transition:border-color 0.2s;
-  -webkit-appearance:none;
-  width:100%;
-  display:block;
-}
-.input-field:focus{border-color:rgba(200,184,154,0.35)}
-.input-field::placeholder{color:#3a3530}
-select.input-field option{background:#111}
-
-.btn-ghost{
-  background:transparent;
-  border:0.5px solid rgba(255,255,255,0.1);
-  color:#8a7f6e;
-  padding:9px 22px;
-  border-radius:4px;
-  font-family:'Inter',sans-serif;
-  cursor:pointer;
-  transition:all 0.2s;
-  letter-spacing:0.06em;
-}
-.btn-ghost:hover{border-color:rgba(200,184,154,0.4);color:#c8b89a}
-
-.editor-panel{
-  border:0.5px solid rgba(255,255,255,0.06);
-  background:rgba(255,255,255,0.01);
+/* 2. Ensure all Cormorant paragraph text is bright enough */
+.font-cormorant {
+  color: #d0c8b8;
 }
 
-.easter-egg-btn{
-  animation:pulse-glow 3s ease-in-out infinite;
-}
-@keyframes pulse-glow{
-  0%,100%{box-shadow:0 0 0 0 rgba(200,184,154,0)}
-  50%{box-shadow:0 0 20px 2px rgba(200,184,154,0.08)}
+/* 3. Field‑note text – slightly brighter and bolder */
+.field-note {
+  color: #d8cfc0;
+  font-weight: 400;          /* use 400 weight if available */
 }
 
-.divider-line{
-  width:40px;
-  height:0.5px;
-  background:#3a3530;
-  margin:0 auto;
+/* 4. Glossary definition – raise contrast */
+.gloss-def {
+  color: #c8c0b0;
 }
 
-/* TIMELINE */
-.timeline-entry{
-  position:relative;
-  padding-left:28px;
-  padding-bottom:32px;
-  border-left:0.5px solid rgba(255,255,255,0.07);
-}
-.timeline-entry::before{
-  content:'';
-  position:absolute;
-  left:-3.5px;top:8px;
-  width:6px;height:6px;
-  border-radius:50%;
-  background:#c8b89a;
-}
-.timeline-entry:last-child{border-left-color:transparent}
-
-/* POEM */
-.poem-card{border-left:1px solid rgba(200,184,154,0.18);padding-left:24px}
-
-/* LETTER */
-.letter-card{
-  background:rgba(255,255,255,0.015);
-  border:0.5px solid rgba(255,255,255,0.07);
-  border-radius:4px;padding:24px 20px;
+/* 5. Poem text – keep the golden tone but increase luminosity */
+.poem-card pre {
+  color: #f0e0c0;
 }
 
-/* GLOSSARY */
-.gloss-term{font-family:'EB Garamond',serif;font-size:1.5rem;color:#e8e2d6}
-.gloss-pos{font-family:'Cormorant Garamond',serif;font-style:italic;color:#8a7f6e;font-size:1rem;margin-left:8px}
-.gloss-def{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#8a7f6e;line-height:1.75;margin-top:6px}
-.gloss-entry{padding-bottom:28px;border-bottom:0.5px solid rgba(255,255,255,0.05)}
-
-/* FIELD NOTE */
-.field-note{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.15rem;font-style:italic;
-  color:#8a7f6e;line-height:1.8;
-  padding:14px 0;
-  border-bottom:0.5px solid rgba(255,255,255,0.05);
-}
-.field-note::before{content:'— ';color:#3a3530}
-
-/* READING */
-.rec-item{display:flex;gap:14px;align-items:flex-start;padding:16px 0;border-bottom:0.5px solid rgba(255,255,255,0.05)}
-.rec-type-badge{
-  font-size:10px;font-family:'Inter',sans-serif;letter-spacing:0.12em;text-transform:uppercase;
-  padding:3px 8px;border-radius:2px;background:rgba(255,255,255,0.04);color:#5a5245;white-space:nowrap;margin-top:3px;flex-shrink:0;
+/* 6. Reading list notes (the italic why‑this‑one) – larger & brighter */
+.rec-item .font-cormorant {
+  font-size: 1rem;
+  color: #c8bfb0;
 }
 
-/* ALBUM */
-.album-tab{
-  font-size:11px;font-family:'Inter',sans-serif;letter-spacing:0.1em;text-transform:uppercase;
-  padding:6px 14px;border-radius:2px;border:0.5px solid rgba(255,255,255,0.08);
-  color:#5a5245;background:transparent;cursor:pointer;transition:all 0.2s;
+/* 7. Badge (Book / Music / Film) – clearer without being loud */
+.rec-type-badge {
+  background: rgba(255, 255, 255, 0.08);
+  color: #b8afa0;
+  font-weight: 500;
 }
-.album-tab.active,.album-tab:hover{border-color:rgba(200,184,154,0.3);color:#c8b89a}
 
-.photo-card{position:relative;aspect-ratio:1;overflow:hidden;border-radius:2px;background:rgba(255,255,255,0.02);border:0.5px solid rgba(255,255,255,0.06)}
-.photo-card img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease}
-.photo-card:hover img{transform:scale(1.04)}
-.photo-caption{
-  position:absolute;bottom:0;left:0;right:0;padding:20px 10px 8px;
-  background:linear-gradient(transparent,rgba(0,0,0,0.75));
-  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;
-  color:rgba(232,226,214,0.8);opacity:0;transition:opacity 0.3s;
+/* 8. Album tab text – less muted */
+.album-tab {
+  color: #b8afa0;
 }
-.photo-card:hover .photo-caption{opacity:1}
-
-/* CONFETTI */
-.confetti-piece{position:absolute;animation:fall linear forwards}
-@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
-
-/* DELETE */
-.delete-btn{opacity:0;background:none;border:none;color:#4a4540;cursor:pointer;font-size:11px;padding:2px 6px;transition:all 0.2s}
-*:hover>.delete-btn,.delete-btn:hover{opacity:1;color:#8a4040}
-
-/* LOADING */
-.loading-shimmer{background:rgba(255,255,255,0.03);border-radius:4px;animation:shimmer 1.5s infinite}
-@keyframes shimmer{0%,100%{opacity:0.5}50%{opacity:1}}
-
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#2a2520;border-radius:2px}
-
-@media(max-width:640px){
-  .section-header h2{font-size:2.4rem}
-  .photo-caption{opacity:1}
-  .delete-btn{opacity:1}
+.album-tab.active,
+.album-tab:hover {
+  color: #f5efe0;
 }
-@media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
+
+/* 9. Timeline date – use a slightly brighter stone */
+.timeline-entry p:first-child {
+  color: #9a9080;
+}
+
+/* 10. Section number (e.g. § I) – a touch more visible */
+.section-header p:first-of-type {
+  color: #8a8070;
+}
+
+/* 11. Subtle font smoothing for cleaner edges on Mac / iOS */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 12. Slightly increase line‑height globally for breathing room */
+body {
+  line-height: 1.6;
+}
+
+/* 13. Delete button – easier to see when revealed */
+.delete-btn {
+  color: #9a9080;
+}
+*:hover > .delete-btn,
+.delete-btn:hover {
+  color: #d07070;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+  overscroll-behavior: none;
+  background: #141414;                  /* lifted from #0e0e0e */
+  color: #f0ede6;                       /* brighter text */
+}
+
+.font-garamond {
+  font-family: 'EB Garamond', serif;
+  color: #f5f2ea;                       /* headings */
+}
+.font-cormorant {
+  font-family: 'Cormorant Garamond', serif;
+  color: #b8b0a0;                       /* sub‑text */
+}
+
+/* ── NAV & PLAYER ─────────────────────────────────── */
+.nav-glass {
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.05);
+}
+.nav-link {
+  color: #8a7f6e;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+.nav-link:hover {
+  color: #f0e6d2;
+}
+
+.player-bar {
+  background: rgba(8, 8, 8, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 0.5px solid rgba(255, 255, 255, 0.06);
+}
+
+.hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px;
+}
+
+/* ── FORM ELEMENTS ────────────────────────────────── */
+.input-field {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  width: 100%;
+  display: block;
+}
+.input-field:focus {
+  border-color: rgba(200, 184, 154, 0.6);
+}
+.input-field::placeholder {
+  color: #6a6258;
+}
+select.input-field option {
+  background: #111;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  color: #8a7f6e;
+  padding: 9px 22px;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.06em;
+}
+.btn-ghost:hover {
+  border-color: rgba(200, 184, 154, 0.4);
+  color: #f0e6d2;
+}
+
+.editor-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── EASTER EGG GLOW ─────────────────────────────── */
+.easter-egg-btn {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(200, 184, 154, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px 2px rgba(200, 184, 154, 0.08);
+  }
+}
+
+.divider-line {
+  width: 40px;
+  height: 0.5px;
+  background: #3a3530;
+  margin: 0 auto;
+}
+
+/* ── SECTION HEADER IMPROVEMENTS ─────────────────── */
+.section-header p:first-of-type {
+  color: #7a7060;              /* § I, § II */
+}
+
+.section-header p:last-of-type {
+  color: #b8b0a0;
+}
+
+/* Underline after h2 */
+.section-header h2::after {
+  background: rgba(232, 216, 180, 0.6);
+}
+
+/* ── TIMELINE ────────────────────────────────────── */
+.timeline-entry {
+  position: relative;
+  padding-left: 28px;
+  padding-bottom: 32px;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+.timeline-entry::before {
+  content: '';
+  position: absolute;
+  left: -3.5px;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e8d8b4;          /* brighter dot */
+}
+.timeline-entry:last-child {
+  border-left-color: transparent;
+}
+
+/* ── POEM ────────────────────────────────────────── */
+.poem-card {
+  border-left: 2px solid rgba(232, 216, 180, 0.35);
+  padding-left: 24px;
+}
+.poem-card pre {
+  font-size: 1.25rem;
+  line-height: 1.9;
+  color: #e8d8b4;               /* warm readable gold */
+}
+
+/* ── LETTER ──────────────────────────────────────── */
+.letter-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 24px 20px;
+}
+.letter-card pre {
+  font-size: 1.25rem;
+  line-height: 1.9;
+}
+
+/* ── GLOSSARY ────────────────────────────────────── */
+.gloss-term {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.5rem;
+  color: #f5f2ea;
+}
+.gloss-pos {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: #b8b0a0;
+  font-size: 1rem;
+  margin-left: 8px;
+}
+.gloss-def {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  color: #b8b0a0;
+  line-height: 1.9;
+  margin-top: 6px;
+}
+.gloss-entry {
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── FIELD NOTE ──────────────────────────────────── */
+.field-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  color: #b8b0a0;
+  line-height: 1.9;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.field-note::before {
+  content: '— ';
+  color: #7a7060;
+}
+
+/* ── READING ─────────────────────────────────────── */
+.rec-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.rec-item .font-cormorant {
+  font-size: 1.05rem;
+}
+.rec-type-badge {
+  font-size: 10px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #8a8070;
+  white-space: nowrap;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+/* ── ALBUM ───────────────────────────────────────── */
+.album-tab {
+  font-size: 11px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 2px;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  color: #8a8070;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.album-tab.active,
+.album-tab:hover {
+  border-color: rgba(232, 216, 180, 0.5);
+  color: #f0e6d2;
+}
+
+.photo-card {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.photo-card:hover img {
+  transform: scale(1.04);
+}
+.photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 10px 8px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: rgba(240, 237, 230, 0.85);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.photo-card:hover .photo-caption {
+  opacity: 1;
+}
+
+/* ── CONFETTI ────────────────────────────────────── */
+.confetti-piece {
+  position: absolute;
+  animation: fall linear forwards;
+}
+@keyframes fall {
+  0% {
+    transform: translateY(-20px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ── DELETE BUTTON ───────────────────────────────── */
+.delete-btn {
+  opacity: 0;
+  background: none;
+  border: none;
+  color: #8a8070;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 2px 6px;
+  transition: all 0.2s;
+}
+*:hover > .delete-btn,
+.delete-btn:hover {
+  opacity: 1;
+  color: #c06060;
+}
+
+/* ── REVEAL ANIMATIONS (for JS staggered reveal) ── */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── LOADING SHIMMER ────────────────────────────── */
+.loading-shimmer {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── SCROLLBAR ───────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2520;
+  border-radius: 2px;
+}
+
+/* ── MOBILE ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .section-header h2 {
+    font-size: 2.4rem;
+  }
+  .photo-caption {
+    opacity: 1;
+  }
+  .delete-btn {
+    opacity: 1;
+  }
+}
+
+/* ── REDUCED MOTION ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── SCROLL‑AWARE FADE ─────────────────────────── */
+.nav-glass,
+.player-bar {
+  transition: opacity 0.4s ease;
+}
+
+.nav-hidden,
+.player-hidden {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
