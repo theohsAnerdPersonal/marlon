@@ -200,9 +200,10 @@ if (!STATE.album) STATE.album = JSON.parse(JSON.stringify(DEFAULT_DATA.album));
 STATE.album.chapters.forEach(c => { if (!STATE.album.photos[c]) STATE.album.photos[c] = []; });
 
 // ─── PASSWORD (SPACES, NO DASHES) ─────────────────────────────────────
+// ─── PASSWORD (NO SPACES, NO DASHES) ────────────────────────────────
 function checkPassword() {
   const val = document.getElementById('pw-input').value.trim();
-  if (val === '30062026') {                     // <-- exact match with spaces
+  if (val === '30052026') {            // <-- exact match: day-month-year, no spaces
     const gate = document.getElementById('password-gate');
     gate.style.opacity = '0';
     gate.style.transition = 'opacity 1s ease';
@@ -218,7 +219,6 @@ function checkPassword() {
     setTimeout(() => err.style.opacity = '0', 2500);
   }
 }
-
 // ─── MUSIC ────────────────────────────────────────────────────────────────
 const audio = document.getElementById('audio-player');
 audio.volume = 0.4;
